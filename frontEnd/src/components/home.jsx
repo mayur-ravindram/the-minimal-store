@@ -3,7 +3,6 @@ import "../index.css";
 import Header from "./header";
 import img from "../assets/samsung-galaxy-s22.png";
 import AddProduct from "./AddProduct";
-import ErrorPage from "./ErrorPage";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -18,7 +17,6 @@ const Home = () => {
     fetch(`http://127.0.0.1:8081/api/mongo/list`)
       .then((response) => {
         if (!response.ok) {
-          setError(true);
           throw new Error(
             `This is an HTTP error: The status is ${response.status}`
           );
@@ -28,7 +26,6 @@ const Home = () => {
       .then((actualData) => setData(actualData))
       .catch((err) => {
         console.log(err.message);
-        setError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -42,13 +39,12 @@ const Home = () => {
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         {loading && <div>A moment please...</div>}
         {error && (
-          <ErrorPage />
+          <div>{`There is a problem fetching the post data - ${error}`}</div>
         )}
-        {!error && (
-          <h1 className="text-3xl my-10 uppercase font-semibold p-2">
-            available products
-          </h1>
-        )}
+
+        <h1 className="text-3xl my-10 uppercase font-semibold p-2">
+          Available products
+        </h1>
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {data &&
             data.map((product) => (
