@@ -2,34 +2,26 @@ import React, { useState } from "react";
 import Header from "./header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginSuccess, setLoginSuccess] = useState();
     let navigate = useNavigate();
 
     // Post request to login for USER AUTHENTICATION
     const login = (e) => {
         e.preventDefault();
-        // axios({
-        //     method: "post",
-        //     url: "http://localhost:8081/api/security/login",
-        //     data: {
-        //         userName: email,
-        //         password: password,
-        //     },
-        // })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         alert(err.response.data);
-        //     })
-        //     .then((res) => {
-        //         if (res && res.status === 200) {
-        //             navigate("/home");
-        //         }
-        //         console.log(res);
-        //     });
-        navigate("/home")
+        authService.login(email, password)
+        .then((data)=> {
+            console.log(data);
+            navigate("/home")
+        })
+        .catch((err)=> {
+            console.log(err);
+            setLoginSuccess(false);
+        });
     };
 
     // Post request to register for USER REGISTRATION
