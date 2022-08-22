@@ -2,10 +2,9 @@ package com.learner.theArtifact.controller;
 
 import com.learner.theArtifact.model.JwtRequest;
 import com.learner.theArtifact.model.JwtResponse;
+import com.learner.theArtifact.service.MongoAuthUserDetailService;
 import com.learner.theArtifact.security.configuration.JwtTokenUtil;
-import com.learner.theArtifact.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 public class JwtAuthenticationController {
 
     @Autowired
@@ -25,14 +24,14 @@ public class JwtAuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private MongoAuthUserDetailService mongoAuthUserDtlSerice;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final UserDetails userDetails = userDetailsService
+        final UserDetails userDetails = mongoAuthUserDtlSerice
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
