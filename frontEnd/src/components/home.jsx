@@ -3,6 +3,8 @@ import "../index.css";
 import Header from "./header";
 import img from "../assets/samsung-galaxy-s22.png";
 import AddProduct from "./AddProduct";
+import authService from "../services/authService";
+import productService from "../services/productService";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -14,21 +16,15 @@ const Home = () => {
   const [color, setColor] = useState("");
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8081/api/mongo/list`)
+    productService
+      .listProducts()
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        return response.json();
-      })
-      .then((actualData) => setData(actualData))
-      .catch((err) => {
-        console.log(err.message);
-      })
-      .finally(() => {
+        setData(response.data);
         setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(true);
       });
   }, []);
 
@@ -48,7 +44,7 @@ const Home = () => {
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {data &&
             data.map((product) => (
-              <a key={product.id} href="#" className="group shadow-lg">
+              <a key={product._id} href="#" className="group shadow-lg">
                 <div className="shadow-sm rounded-lg overflow-hidden aspect-square">
                   <img
                     src={product.imageSrc}
@@ -78,3 +74,25 @@ const Home = () => {
 };
 
 export default Home;
+
+async function makeAuthenticateCall() {
+  var options = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      username: "mayur",
+      password: "password",
+    }),
+  };
+  await fetch("http://localhost:8081/api/authenticate", options)
+    .then((response) => {
+      response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
