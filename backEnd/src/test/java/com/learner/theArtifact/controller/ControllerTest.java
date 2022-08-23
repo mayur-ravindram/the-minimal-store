@@ -2,6 +2,7 @@ package com.learner.theArtifact.controller;
 
 import com.learner.theArtifact.model.Product;
 import com.learner.theArtifact.service.MongoProductService;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Ignore("Test in progress")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc

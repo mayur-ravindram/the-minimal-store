@@ -1,18 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import imgPath from "../assets/404-panda.png";
 const ErrorPage = () => {
   return (
-    <div className="p-4 shadow-lg">
-      <div className="flex flex-col justify-center align-middle">
+    <div className="">
+      <Link to={"/"}>
+        <div className="m-2 p-2 bg-blue-400 w-20 rounded-md text-center shadow-md text-gray-200">
+          Back
+        </div>
+      </Link>
+      <div className="mt-4 flex justify-center align-middle">
         <img
           src={imgPath}
           alt="error image"
-          className="rounded-t-lg aspect-auto"
+          width={800}
+          className="aspect-auto"
         />
-        <h2 className="text-lg text-pink-500">
-          we are currently facing problems 😔
-        </h2>
       </div>
     </div>
   );

@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import "../index.css";
-import Header from "./header";
-import img from "../assets/samsung-galaxy-s22.png";
-import AddProduct from "./AddProduct";
-import ErrorPage from "./ErrorPage";
-import authService from "../services/authService";
 import productService from "../services/productService";
+import ErrorPage from "./ErrorPage";
+import Header from "./header";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -20,21 +17,17 @@ const Home = () => {
     productService
       .listProducts()
       .then((response) => {
-        if (!response.ok) {
-          setError(true);
+        if (response.status === 200) {
+          setData(response.data);
+          setLoading(false);
         }
-        return response.json();
-        setData(response.data);
-        setLoading(false);
+        return response;
       })
       .catch((err) => {
         setError(true);
         console.log(err.message);
       })
       .finally(() => {
-        setLoading(false);
-        console.log(err);
-        setError(true);
       });
   }, []);
 
